@@ -3,19 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exam Prep Mastery Dashboard</title>
+    <title>Exam Mastery Dashboard</title>
     <style>
         :root {
             --primary: #4f46e5;
-            --secondary: #6366f1;
+            --success: #10b981;
             --bg: #f8fafc;
-            --text: #1e293b;
-            --accent: #10b981;
             --card-bg: #ffffff;
+            --text: #1e293b;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', system-ui, sans-serif;
             background-color: var(--bg);
             color: var(--text);
             margin: 0;
@@ -25,18 +24,47 @@
             align-items: center;
         }
 
-        h1 {
-            margin-bottom: 10px;
-            color: var(--primary);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-size: 1.8rem;
+        .sticky-header {
+            position: sticky;
+            top: 0;
+            background: var(--bg);
+            width: 100%;
+            max-width: 1400px;
+            z-index: 100;
+            padding: 10px 0;
+            border-bottom: 1px solid #e2e8f0;
+            margin-bottom: 20px;
         }
 
-        .header-info {
-            margin-bottom: 25px;
+        .progress-container {
+            width: 100%;
+            height: 12px;
+            background: #e2e8f0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        #progress-bar {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--success));
+            transition: width 0.4s ease;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
             font-size: 0.9rem;
+        }
+
+        #quote-box {
+            font-style: italic;
             color: #64748b;
+            text-align: center;
+            margin: 10px 0;
+            min-height: 1.2em;
         }
 
         .grid-container {
@@ -51,269 +79,150 @@
             background: var(--card-bg);
             border-radius: 12px;
             padding: 15px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            border-top: 4px solid var(--primary);
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .topic-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border-left: 5px solid var(--primary);
         }
 
         .topic-title {
             font-weight: 700;
-            font-size: 1rem;
             margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            border-bottom: 1px solid #e2e8f0;
-            padding-bottom: 5px;
+            color: var(--primary);
         }
 
-        .topic-number {
-            background: var(--primary);
-            color: white;
-            border-radius: 50%;
-            width: 24px;
-            height: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.75rem;
-            margin-right: 10px;
-        }
-
-        ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        li {
-            font-size: 0.85rem;
-            padding: 4px 0;
-            display: flex;
-            align-items: flex-start;
-            color: #475569;
+        ul { list-style: none; padding: 0; margin: 0; }
+        li { 
+            font-size: 0.85rem; 
+            padding: 5px 0; 
+            display: flex; 
+            align-items: center; 
         }
 
         input[type="checkbox"] {
             margin-right: 10px;
-            margin-top: 3px;
+            width: 16px;
+            height: 16px;
             cursor: pointer;
-            accent-color: var(--accent);
         }
 
-        /* Responsive adjustments for "Single Page" feel */
-        @media (min-width: 1200px) {
-            .grid-container {
-                grid-template-columns: repeat(4, 1fr);
-            }
+        input[type="checkbox"]:checked + span {
+            text-decoration: line-through;
+            color: #94a3b8;
         }
 
-        .footer {
-            margin-top: 30px;
-            font-size: 0.8rem;
-            opacity: 0.6;
-        }
+        @media (min-width: 1200px) { .grid-container { grid-template-columns: repeat(4, 1fr); } }
     </style>
 </head>
 <body>
 
-    <h1>Aptitude Study Tracker</h1>
-    <p class="header-info">20 Modules | Strategic Preparation Layout</p>
-
-    <div class="grid-container">
-        <div class="topic-card">
-            <div class="topic-title"><span class="topic-number">1</span> Number System</div>
-            <ul>
-                <li><input type="checkbox"> Number system basics</li>
-                <li><input type="checkbox"> Power cycle</li>
-                <li><input type="checkbox"> Remainder cycle</li>
-                <li><input type="checkbox"> Factors & Multiples</li>
-                <li><input type="checkbox"> HCF and LCM</li>
-            </ul>
+    <div class="sticky-header">
+        <h1 style="margin:0; font-size: 1.5rem;">Aptitude Prep Tracker</h1>
+        <div id="quote-box">"Loading motivation..."</div>
+        
+        <div class="progress-container">
+            <div id="progress-bar"></div>
         </div>
-
-        <div class="topic-card">
-            <div class="topic-title"><span class="topic-number">2</span> Reading Comprehension</div>
-            <ul>
-                <li><input type="checkbox"> Speed Reading Strategies</li>
-                <li><input type="checkbox"> RC Types & Tackling</li>
-            </ul>
-        </div>
-
-        <div class="topic-card">
-            <div class="topic-title"><span class="topic-number">3</span> Arrangements & Blood Rel.</div>
-            <ul>
-                <li><input type="checkbox"> Linear Arrangement</li>
-                <li><input type="checkbox"> Circular Arrangement</li>
-                <li><input type="checkbox"> Multi-dimensional</li>
-                <li><input type="checkbox"> Blood Relations</li>
-            </ul>
-        </div>
-
-        <div class="topic-card">
-            <div class="topic-title"><span class="topic-number">4</span> Time and Work</div>
-            <ul>
-                <li><input type="checkbox"> Different Efficiencies</li>
-                <li><input type="checkbox"> Pipes and Cisterns</li>
-                <li><input type="checkbox"> Work Equivalence</li>
-                <li><input type="checkbox"> Division of Wages</li>
-            </ul>
-        </div>
-
-        <div class="topic-card">
-            <div class="topic-title"><span class="topic-number">5</span> Sentence Correction</div>
-            <ul>
-                <li><input type="checkbox"> Subject-Verb Agreement</li>
-                <li><input type="checkbox"> Modifiers & Parallelism</li>
-                <li><input type="checkbox"> Pronoun-Antecedent</li>
-                <li><input type="checkbox"> Verb Time Sequences</li>
-                <li><input type="checkbox"> Comparisons & Prepositions</li>
-            </ul>
-        </div>
-
-        <div class="topic-card">
-            <div class="topic-title"><span class="topic-number">6</span> Coding & Reasoning</div>
-            <ul>
-                <li><input type="checkbox"> Coding and Decoding</li>
-                <li><input type="checkbox"> Series & Analogy</li>
-                <li><input type="checkbox"> Odd Man Out</li>
-                <li><input type="checkbox"> Visual Reasoning</li>
-            </ul>
-        </div>
-
-        <div class="topic-card">
-            <div class="topic-title"><span class="topic-number">7</span> Sentence Completion</div>
-            <ul>
-                <li><input type="checkbox"> Pro-active Thinking</li>
-                <li><input type="checkbox"> Signposts & Roots</li>
-                <li><input type="checkbox"> Fixed/Anchored Jumbles</li>
-            </ul>
-        </div>
-
-        <div class="topic-card">
-            <div class="topic-title"><span class="topic-number">8</span> Vocabulary</div>
-            <ul>
-                <li><input type="checkbox"> Vocabulary Demystified</li>
-                <li><input type="checkbox"> Synonyms & Antonyms</li>
-                <li><input type="checkbox"> Word Analogy</li>
-            </ul>
-        </div>
-
-        <div class="topic-card">
-            <div class="topic-title"><span class="topic-number">9</span> Data Interpretation</div>
-            <ul>
-                <li><input type="checkbox"> Tables & Pie Charts</li>
-                <li><input type="checkbox"> Bar Graphs</li>
-                <li><input type="checkbox"> Data Sufficiency</li>
-            </ul>
-        </div>
-
-        <div class="topic-card">
-            <div class="topic-title"><span class="topic-number">10</span> Profit, Loss & Avg</div>
-            <ul>
-                <li><input type="checkbox"> Profit & Loss Basics</li>
-                <li><input type="checkbox"> Partnerships</li>
-                <li><input type="checkbox"> Weighted Averages</li>
-                <li><input type="checkbox"> Mixtures & Alligations</li>
-            </ul>
-        </div>
-
-        <div class="topic-card">
-            <div class="topic-title"><span class="topic-number">11</span> Permutation & Prob.</div>
-            <ul>
-                <li><input type="checkbox"> Counting Principles</li>
-                <li><input type="checkbox"> Permutation & Combination</li>
-                <li><input type="checkbox"> Circular Permutations</li>
-                <li><input type="checkbox"> Probability</li>
-            </ul>
-        </div>
-
-        <div class="topic-card">
-            <div class="topic-title"><span class="topic-number">12</span> Time, Speed, Distance</div>
-            <ul>
-                <li><input type="checkbox"> Relative Speed</li>
-                <li><input type="checkbox"> Trains & Boats</li>
-                <li><input type="checkbox"> Streams & Races</li>
-            </ul>
-        </div>
-
-        <div class="topic-card">
-            <div class="topic-title"><span class="topic-number">13</span> Articles & Prep.</div>
-            <ul>
-                <li><input type="checkbox"> Definite/Indefinite</li>
-                <li><input type="checkbox"> Omission Rules</li>
-                <li><input type="checkbox"> Interrogatives</li>
-            </ul>
-        </div>
-
-        <div class="topic-card">
-            <div class="topic-title"><span class="topic-number">14</span> Ratio & Proportion</div>
-            <ul>
-                <li><input type="checkbox"> Variation</li>
-                <li><input type="checkbox"> Simple Equations</li>
-                <li><input type="checkbox"> Problems on Ages</li>
-            </ul>
-        </div>
-
-        <div class="topic-card">
-            <div class="topic-title"><span class="topic-number">15</span> Syllogism & Venn</div>
-            <ul>
-                <li><input type="checkbox"> Logical Connectives</li>
-                <li><input type="checkbox"> Syllogisms</li>
-                <li><input type="checkbox"> Venn Diagrams</li>
-            </ul>
-        </div>
-
-        <div class="topic-card">
-            <div class="topic-title"><span class="topic-number">16</span> Higher Math</div>
-            <ul>
-                <li><input type="checkbox"> Logarithms</li>
-                <li><input type="checkbox"> AP & GP Progressions</li>
-                <li><input type="checkbox"> Geometry & Mensuration</li>
-                <li><input type="checkbox"> Quadratic Equations</li>
-            </ul>
-        </div>
-
-        <div class="topic-card">
-            <div class="topic-title"><span class="topic-number">17</span> Attention to Detail</div>
-            <ul>
-                <li><input type="checkbox"> String Matching</li>
-                <li><input type="checkbox"> Image Comprehension</li>
-                <li><input type="checkbox"> Decision Making</li>
-            </ul>
-        </div>
-
-        <div class="topic-card">
-            <div class="topic-title"><span class="topic-number">18</span> Image Interpretation</div>
-            <ul>
-                <li><input type="checkbox"> Rebus Puzzles</li>
-                <li><input type="checkbox"> Word-Image Formation</li>
-            </ul>
-        </div>
-
-        <div class="topic-card">
-            <div class="topic-title"><span class="topic-number">19</span> Clocks & Calendars</div>
-            <ul>
-                <li><input type="checkbox"> Clocks & Calendars</li>
-                <li><input type="checkbox"> Direction Sense</li>
-                <li><input type="checkbox"> Cubes</li>
-            </ul>
-        </div>
-
-        <div class="topic-card">
-            <div class="topic-title"><span class="topic-number">20</span> Voices & Speech</div>
-            <ul>
-                <li><input type="checkbox"> Active & Passive</li>
-                <li><input type="checkbox"> Direct & Indirect</li>
-            </ul>
+        <div class="stats">
+            <span>Progress: <span id="percent">0</span>%</span>
+            <span>Topics Done: <span id="count">0</span> / <span id="total">0</span></span>
         </div>
     </div>
 
-    <div class="footer">Keep pushing. Consistency is the key to Aptitude.</div>
+    <div class="grid-container" id="main-grid">
+        </div>
+
+    <script>
+        const syllabus = [
+            { id: 1, title: "Number System", items: ["Number system", "Power cycle", "Remainder cycle", "Factors, Multiples", "HCF and LCM"] },
+            { id: 2, title: "Reading Comprehension", items: ["Speed Reading Strategies", "RC - Types and Strategies"] },
+            { id: 3, title: "Arrangements & Blood Relations", items: ["Linear Arrangement", "Circular Arrangement", "Multi-dimensional", "Blood Relations"] },
+            { id: 4, title: "Time and Work", items: ["Different efficiencies", "Pipes and cisterns", "Work equivalence", "Division of wages"] },
+            { id: 5, title: "Sentence Correction", items: ["Subject-Verb Agreement", "Modifiers", "Parallelism", "Pronoun-Antecedent", "Verb Time", "Comparisons", "Prepositions", "Determiners"] },
+            { id: 6, title: "Reasoning Mix", items: ["Coding & Decoding", "Series", "Analogy", "Odd Man Out", "Visual Reasoning"] },
+            { id: 7, title: "Sentence & Jumbles", items: ["Pro-active thinking", "Reactive thinking", "Fixed jumbles", "Anchored jumbles"] },
+            { id: 8, title: "Vocabulary", items: ["Vocabulary Demystified", "Synonyms & Antonyms", "Word Analogy", "Misc Vocabulary"] },
+            { id: 9, title: "DI & Data Sufficiency", items: ["Tables", "Pie Chart", "Bar Graph", "Data Sufficiency"] },
+            { id: 10, title: "Profit, Loss & Avg", items: ["Terminologies", "Partnership", "Averages", "Weighted average", "Mixtures & Alligations"] },
+            { id: 11, title: "P&C and Probability", items: ["Counting Principle", "Permutations", "Circular Permutations", "Combinations", "Probability"] },
+            { id: 12, title: "Time, Speed, Distance", items: ["Basics", "Relative speed", "Trains", "Boats & Streams", "Races"] },
+            { id: 13, title: "Articles & Grammar", items: ["Articles", "Omission of Articles", "Prepositions", "Interrogatives"] },
+            { id: 14, title: "Ratio & Proportion", items: ["Ratio", "Proportion", "Variation", "Simple equations", "Ages"] },
+            { id: 15, title: "Logic & Venn", items: ["Logical Connectives", "Syllogisms", "Venn - Interpretation", "Venn - Solving"] },
+            { id: 16, title: "Higher Math & Geometry", items: ["Logarithms", "AP / GP", "Geometry", "Mensuration", "Quadratic Equations"] },
+            { id: 17, title: "Attention to Detail", items: ["String matching", "Text/Image Comprehension", "Decision based Qs"] },
+            { id: 18, title: "Image Interpretation", items: ["Rebus puzzles", "Word formation from images"] },
+            { id: 19, title: "Clocks & Calendars", items: ["Clocks", "Calendars", "Direction Sense", "Cubes"] },
+            { id: 20, title: "Voices & Speech", items: ["Active/Passive Voice", "Direct/Indirect Speech"] }
+        ];
+
+        const quotes = [
+            "Success is the sum of small efforts, repeated daily.",
+            "Don't stop until you're proud.",
+            "Aptitude is the key to every locked door.",
+            "Your future depends on what you do today.",
+            "Consistency beats talent when talent doesn't work hard."
+        ];
+
+        const grid = document.getElementById('main-grid');
+        let globalIndex = 0;
+
+        // Render Syllabus
+        syllabus.forEach(topic => {
+            const card = document.createElement('div');
+            card.className = 'topic-card';
+            let listHtml = ``;
+            topic.items.forEach(item => {
+                const checked = localStorage.getItem('task-' + globalIndex) === 'true' ? 'checked' : '';
+                listHtml += `<li><input type="checkbox" data-id="${globalIndex}" ${checked}> <span>${item}</span></li>`;
+                globalIndex++;
+            });
+            card.innerHTML = `<div class="topic-title">${topic.id}. ${topic.title}</div><ul>${listHtml}</ul>`;
+            grid.appendChild(card);
+        });
+
+        // Functionality
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        const updateProgress = () => {
+            const checked = Array.from(checkboxes).filter(c => c.checked).length;
+            const total = checkboxes.length;
+            const percent = Math.round((checked / total) * 100);
+            document.getElementById('progress-bar').style.width = percent + '%';
+            document.getElementById('percent').innerText = percent;
+            document.getElementById('count').innerText = checked;
+            document.getElementById('total').innerText = total;
+        };
+
+        checkboxes.forEach(cb => {
+            cb.addEventListener('change', (e) => {
+                localStorage.setItem('task-' + e.target.dataset.id, e.target.checked);
+                updateProgress();
+            });
+        });
+
+        // Set Random Quote
+        document.getElementById('quote-box').innerText = `"${quotes[Math.floor(Math.random() * quotes.length)]}"`;
+        
+        updateProgress();
+    </script>
+</body>
+</html>
+
+    <script>
+    // This script remembers what you checked!
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    
+    checkboxes.forEach((checkbox, index) => {
+        // 1. Load the saved data from your browser's memory
+        const savedData = localStorage.getItem('topic-' + index);
+        if (savedData === 'true') {
+            checkbox.checked = true;
+        }
+
+        // 2. Save the data whenever you click a box
+        checkbox.addEventListener('change', () => {
+            localStorage.setItem('topic-' + index, checkbox.checked);
+        });
+    });
+</script>
 
 </body>
 </html>
